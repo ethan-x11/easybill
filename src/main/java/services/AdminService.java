@@ -1,9 +1,12 @@
 package services;
 
 import repositories.AdminRepository;
-import utils.PasswordEncrytion;
+import utils.PasswordEncryption;
 
 import java.sql.SQLException;
+
+import models.Admin;
+
 import java.security.NoSuchAlgorithmException;
 
 public class AdminService {
@@ -14,12 +17,13 @@ public class AdminService {
     }
 
     public boolean validateAdmin(String adminId, String password) throws SQLException, NoSuchAlgorithmException {
-        String hashedPassword = PasswordEncrytion.hashPassword(password);
+        String hashedPassword = PasswordEncryption.hashPassword(password);
         return adminRepository.validateAdmin(adminId, hashedPassword);
     }
 
-    public void registerAdmin(String adminId, String password) throws SQLException, NoSuchAlgorithmException {
-        String hashedPassword = PasswordEncrytion.hashPassword(password);
-        adminRepository.createAdmin(adminId, hashedPassword);
+    public void registerAdmin(Admin admin) throws SQLException, NoSuchAlgorithmException {
+        String hashedPassword = PasswordEncryption.hashPassword(admin.getHashedPassword());
+        admin.setHashedPassword(hashedPassword);
+        adminRepository.createAdmin(admin);
     }
 }

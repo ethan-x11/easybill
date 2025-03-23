@@ -498,6 +498,7 @@ to {
 /* Complaint_View Page */
 .comp-top-container {
 	margin: 40px;
+	margin-top: 100px;
 }
 
 .complaint-view-container {
@@ -534,6 +535,59 @@ to {
 
 .complaint-view-container table tr:nth-child(even) {
 	background-color: #f2f2f2;
+}
+
+/* Styles for the complaint-view-container */
+.complaint-view-container {
+    padding: 20px;
+    background-color: #f9f9f9;
+    border-radius: 8px;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+    margin: 20px auto;
+    max-width: 800px;
+}
+
+/* Styles for the h1 element inside complaint-view-container */
+.complaint-view-container h1 {
+    font-size: 24px;
+    color: #333;
+    text-align: center;
+    margin-bottom: 20px;
+}
+
+/* Styles for the p element inside complaint-view-container */
+.complaint-view-container p {
+    font-size: 16px;
+    color: #666;
+    text-align: center;
+    margin-bottom: 20px;
+}
+
+/* Styles for the table inside complaint-view-container */
+.complaint-view-container table {
+    width: 100%;
+    border-collapse: collapse;
+    margin-bottom: 20px;
+}
+
+.complaint-view-container table th,
+.complaint-view-container table td {
+    border: 1px solid #ddd;
+    padding: 8px;
+    text-align: left;
+}
+
+.complaint-view-container table th {
+    background-color: #f2f2f2;
+    color: #333;
+}
+
+.complaint-view-container table tr:nth-child(even) {
+    background-color: #f9f9f9;
+}
+
+.complaint-view-container table tr:hover {
+    background-color: #f1f1f1;
 }
 
 /* Complaint Status Search*/
@@ -725,7 +779,7 @@ to {
 .reg-container {
 	width: 300px;
 	margin: auto;
-	margin-top: 50px;
+	margin-top: 150px;
 	margin-bottom: 50px;
 	padding: 20px;
 	border: 1px solid #ccc;
@@ -763,7 +817,7 @@ to {
 .login-container {
 	width: 300px;
 	margin: auto;
-	margin-top: 50px;
+	margin-top: 150px;
 	padding: 20px;
 	border: 1px solid #ccc;
 	border-radius: 5px;
@@ -834,7 +888,7 @@ to {
 .registration-success-container {
 	width: 300px;
 	margin: auto;
-	margin-top: 50px;
+	margin-top: 150px;
 	margin-bottom: 50px;
 	padding: 20px;
 	border: 1px solid #ccc;

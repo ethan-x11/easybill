@@ -1,6 +1,8 @@
 package repositories;
 
 import models.Bill;
+import utils.ConnectionManager;
+
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
@@ -30,6 +32,33 @@ public class BillRepository {
                     resultSet.getString("transaction_date_time")
                 );
                 bills.add(bill);
+            }
+        }
+        return bills;
+    }
+
+    public List<Bill> getBillsByConsumerId(long consumerId) throws SQLException {
+        List<Bill> bills = new ArrayList<>();
+        String sql = "SELECT * FROM bill WHERE consumerId = ? ORDER BY date DESC";
+        try (Connection connection = ConnectionManager.getConnection();
+            PreparedStatement statement = connection.prepareStatement(sql)) {
+            statement.setLong(1, consumerId);
+            try (ResultSet resultSet = statement.executeQuery()) {
+                while (resultSet.next()) {
+                    Bill bill = new Bill(
+                        resultSet.getString("billId"),
+                        resultSet.getInt("unit"),
+                        resultSet.getString("month"),
+                        resultSet.getString("date"),
+                        resultSet.getString("due_date"),
+                        resultSet.getDouble("amount"),
+                        resultSet.getString("payment_status"),
+                        resultSet.getLong("consumerId"),
+                        resultSet.getString("transaction_id"),
+                        resultSet.getString("transaction_date_time")
+                    );
+                    bills.add(bill);
+                }
             }
         }
         return bills;

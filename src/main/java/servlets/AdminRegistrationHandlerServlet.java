@@ -9,6 +9,7 @@ import jakarta.servlet.http.HttpServlet;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import services.AdminService;
+import models.Admin;
 
 @WebServlet("/AdminRegistrationHandlerServlet")
 public class AdminRegistrationHandlerServlet extends HttpServlet {
@@ -22,10 +23,13 @@ public class AdminRegistrationHandlerServlet extends HttpServlet {
 
     protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
         String adminId = request.getParameter("adminId");
+        String adminName = request.getParameter("adminName");
         String password = request.getParameter("password");
 
+        Admin admin = new Admin(adminId, adminName, password);
+
         try {
-            adminService.registerAdmin(adminId, password);
+            adminService.registerAdmin(admin);
             request.setAttribute("statusMessage", "Admin registration successful. Admin ID: " + adminId);
         } catch (SQLException | NoSuchAlgorithmException e) {
             if (e.getMessage().contains("UNIQUE constraint failed")) {

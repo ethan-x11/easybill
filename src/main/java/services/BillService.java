@@ -16,6 +16,10 @@ public class BillService {
         return billRepository.getAllBills();
     }
 
+    public List<Bill> getBillsByConsumerId(long consumerId) throws SQLException {
+        return billRepository.getBillsByConsumerId(consumerId);
+    }
+
     public void updateBillPayment(long consumerId, String transactionId, String transactionDateTime, String paymentStatus) throws SQLException {
         billRepository.updateBillPayment(consumerId, transactionId, transactionDateTime, paymentStatus);
     }

@@ -8,6 +8,7 @@ import jakarta.servlet.annotation.WebServlet;
 import jakarta.servlet.http.HttpServlet;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
+import jakarta.servlet.http.HttpSession;
 import models.Bill;
 import services.BillService;
 
@@ -22,8 +23,16 @@ public class BillListServlet extends HttpServlet {
     }
 
     protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+        HttpSession session = request.getSession();
+        Long consumerId = (Long) session.getAttribute("consumerId");
+
+        if (consumerId == null) {
+            response.sendRedirect("login.jsp");
+            return;
+        }
+
         try {
-            List<Bill> bills = billService.getAllBills();
+            List<Bill> bills = billService.getBillsByConsumerId(consumerId);
             request.setAttribute("bills", bills);
         } catch (SQLException e) {
             request.setAttribute("errorMessage", "Error while fetching bills");

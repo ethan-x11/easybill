@@ -26,6 +26,8 @@ function validateForm() {
         <form action="AdminRegistrationHandlerServlet" method="post" class="reg-form" onsubmit="return validateForm()">
             <label for="adminId" class="reg-label">Admin Id:</label>
             <input type="text" id="adminId" name="adminId" class="reg-input" required>
+            <label for="adminName" class="reg-label">Admin Name:</label>
+            <input type="text" id="adminName" name="adminName" class="reg-input" required>
             <label for="password" class="reg-label">Password:</label>
             <input type="password" id="password" name="password" class="reg-input" required>
             <label for="confirmPassword" class="reg-label">Confirm Password:</label>

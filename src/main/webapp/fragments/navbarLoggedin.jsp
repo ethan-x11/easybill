@@ -30,7 +30,7 @@ String consumerId = (sessionObj != null) ? String.valueOf(sessionObj.getAttribut
             <ul class="nav-linksLoggedin">
                 <li><a href="BillListServlet">Pay Bill</a></li>
                 <li><a href="complaint_registration.jsp">Register Complaint</a></li>
-                <li><a href="complaint_status_search.jsp">Complaint Status</a></li>
+                <li><a href="ComplaintSearchServlet">Complaint Status</a></li>
             </ul>
         </div>
 

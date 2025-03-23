@@ -1,6 +1,8 @@
 package repositories;
 
 import models.Consumer;
+import utils.ConnectionManager;
+
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
