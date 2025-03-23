@@ -25,7 +25,9 @@ public class BillRepository {
                     resultSet.getString("due_date"),
                     resultSet.getDouble("amount"),
                     resultSet.getString("payment_status"),
-                    resultSet.getLong("consumerId")
+                    resultSet.getLong("consumerId"),
+                    resultSet.getString("transaction_id"),
+                    resultSet.getString("transaction_date_time")
                 );
                 bills.add(bill);
             }

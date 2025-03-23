@@ -79,6 +79,8 @@
                     <th>Due Date</th>
                     <th>Bill Amount</th>
                     <th>Payment Status</th>
+                    <th>Transaction ID</th>
+                    <th>Transaction DateTime</th>
                 </tr>
             </thead>
             <tbody>
@@ -94,6 +96,8 @@
                     <td><%= bill.getDueDate() %></td>
                     <td><%= bill.getAmount() %></td>
                     <td><%= bill.getPaymentStatus() %></td>
+                    <td><%= bill.getTransactionId() %></td>
+                    <td><%= bill.getTransactionDateTime() %></td>
                 </tr>
                 <%
                         }

@@ -13,8 +13,9 @@ body {
 	background: linear-gradient(90deg, #2a9d8f, #0081a7);
 	padding: 15px 20px;
 	box-shadow: Opx 4px 6px rgba(0, 0, 0, 0.2);
-	position: relative;
+	position: fixed;
 	width: -webkit-fill-available;
+	top: 5px;
 }
 
 .logo {
@@ -61,6 +62,7 @@ body {
 	box-shadow: 0px 4px 6px rgba(0, 0, 0, 0.2);
 	position: fixed;
 	width: -webkit-fill-available;
+	top: 5px;
 }
 
 .nav-containerLoggedin {
@@ -90,7 +92,6 @@ body {
 }
 
 .user-sectionLoggedin {
-	position: abso lute;
 	right: 20px;
 	display: flex;
 	align-items: center;
@@ -176,6 +177,7 @@ body {
 	box-shadow: Opx Opx 20px rgba(O, O, O, 0.6);
 	text-align: center;
 	animation: fadeln 1s ease-in-out;
+	margin-top: 50px;
 }
 
 /* Fade-in Animation */
@@ -248,7 +250,6 @@ to {
 }
 
 /* Payment Section */
-
 .payment-container {
 	padding-top: 100px;
 }
@@ -535,18 +536,17 @@ to {
 	background-color: #f2f2f2;
 }
 
-
 /* Complaint Status Search*/
-
 .complaint-search-container {
 	font-family: Arial, sans-serif;
 	width: 400px;
-	margin: 100px auto;
+	margin: 150px auto;
 	background: white;
 	padding: 20px;
 	border-radius: 10px;
 	box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
 	text-align: center;
+	background: white;
 }
 
 .complaint-search-container input {
@@ -592,9 +592,7 @@ to {
 	font-weight: bold;
 }
 
-
 /* Complaint Registration*/
-
 .fullDiv {
 	font-family: Arial, sans-serif;
 	background-color: #f4f4f4;
@@ -610,10 +608,13 @@ to {
 	min-width: 20px;
 	padding: 20px;
 	margin: 40px;
+	margin-top: 100px;
+	margin-bottom: 60px;
 	background: #fff;
 	border: 2px solid #007bff;
 	border-radius: 10px;
 	box-shadow: 3px 3px 10px rgba(0, 0, 0, 0.1);
+	background: #fff;
 }
 
 .form-container h1 {
@@ -691,105 +692,118 @@ to {
 
 /* Bill Listing */
 .bill-listing-container {
-    padding: 20px;
+	padding: 20px;
 	margin-bottom: 60px;
 	padding-top: 100px;
 }
 
 .current-bill-card {
-    background-color: #f9f9f9;
-    border: 1px solid #ccc;
-    border-radius: 5px;
-    padding: 20px;
-    margin-bottom: 20px;
+	background-color: #f9f9f9;
+	border: 1px solid #ccc;
+	border-radius: 5px;
+	padding: 20px;
+	margin-bottom: 20px;
 }
 
 .bill-table {
-    width: 100%;
-    border-collapse: collapse;
+	width: 100%;
+	border-collapse: collapse;
 	padding-bottom: 600px;
 }
 
 .bill-table th, .bill-table td {
-    border: 1px solid #ccc;
-    padding: 8px;
-    text-align: left;
+	border: 1px solid #ccc;
+	padding: 8px;
+	text-align: left;
 }
 
 .bill-table th {
-    background-color: #f0f0f0;
+	background-color: #f0f0f0;
 }
 
 /* Registration */
 .reg-container {
-    width: 300px;
-    margin: auto;
-    margin-top: 50px;
-    margin-bottom: 50px;
-    padding: 20px;
-    border: 1px solid #ccc;
-    border-radius: 5px;
-    background-color: #f9f9f9;
-}
-.reg-title {
-    text-align: center;
-}
-.reg-label, .reg-input, .reg-select, .reg-button {
-    display: block;
-    width: 90%;
-    margin-bottom: 10px;
-}
-.reg-input, .reg-select, .reg-button {
-    padding: 10px;
-    border: 1px solid #ccc;
-    border-radius: 5px;
-}
-.reg-button {
-    background-color: #28a745;
-    color: white;
-    cursor: pointer;
-}
-.reg-button:hover {
-    background-color: #218838;
-}
-
-/* Login */
-
-.login-container {
 	width: 300px;
 	margin: auto;
-	margin-top:50px;
+	margin-top: 50px;
+	margin-bottom: 50px;
 	padding: 20px;
 	border: 1px solid #ccc;
 	border-radius: 5px;
 	background-color: #f9f9f9;
 }
-.login-container h2, .login-container h3 {
+
+.reg-title {
 	text-align: center;
 }
-.login-container label, .login-container input, .login-container button {
+
+.reg-label, .reg-input, .reg-select, .reg-button {
 	display: block;
 	width: 90%;
 	margin-bottom: 10px;
 }
+
+.reg-input, .reg-select, .reg-button {
+	padding: 10px;
+	border: 1px solid #ccc;
+	border-radius: 5px;
+}
+
+.reg-button {
+	background-color: #28a745;
+	color: white;
+	cursor: pointer;
+}
+
+.reg-button:hover {
+	background-color: #218838;
+}
+
+/* Login */
+.login-container {
+	width: 300px;
+	margin: auto;
+	margin-top: 50px;
+	padding: 20px;
+	border: 1px solid #ccc;
+	border-radius: 5px;
+	background-color: #f9f9f9;
+	padding: 20px;
+}
+
+.login-container h2, .login-container h3 {
+	text-align: center;
+}
+
+.login-container label, .login-container input, .login-container button
+	{
+	display: block;
+	width: 90%;
+	margin-bottom: 10px;
+}
+
 .login-container input, .login-container button {
 	padding: 10px;
 	border: 1px solid #ccc;
 	border-radius: 5px;
 }
+
 .login-container button {
 	background-color: #007bff;
 	color: white;
 	cursor: pointer;
 }
+
 .login-container button:hover {
 	background-color: #0056b3;
 }
+
 .login-switch-buttons {
 	display: flex;
 	justify-content: space-between;
 	margin-bottom: 20px;
 }
+
 .login-switch-buttons button {
 	width: 48%;
 }
@@ -802,12 +816,14 @@ to {
 	cursor: pointer;
 	font-size: 16px;
 	border-radius: 5px;
-	width:100%;
+	width: 100%;
 }
+
 .selected {
 	background-color: #28a745; /* Change this color to your desired color */
 	color: white;
 }
+
 .error-message {
 	color: red;
 	text-align: center;
@@ -816,37 +832,37 @@ to {
 
 /* Registration Success Page */
 .registration-success-container {
-    width: 300px;
-    margin: auto;
-    margin-top: 50px;
-    margin-bottom: 50px;
-    padding: 20px;
-    border: 1px solid #ccc;
-    border-radius: 5px;
-    background-color: #f9f9f9;
-    text-align: center;
+	width: 300px;
+	margin: auto;
+	margin-top: 50px;
+	margin-bottom: 50px;
+	padding: 20px;
+	border: 1px solid #ccc;
+	border-radius: 5px;
+	background-color: #f9f9f9;
+	text-align: center;
 }
 
 .registration-success-container h2 {
-    margin-bottom: 20px;
+	margin-bottom: 20px;
 }
 
 .registration-success-container p {
-    margin: 10px 0;
+	margin: 10px 0;
 }
 
 .registration-success-container button {
-    background-color: #28a745;
-    color: white;
-    padding: 10px 20px;
-    border: none;
-    border-radius: 5px;
-    cursor: pointer;
-    font-size: 16px;
+	background-color: #28a745;
+	color: white;
+	padding: 10px 20px;
+	border: none;
+	border-radius: 5px;
+	cursor: pointer;
+	font-size: 16px;
 }
 
 .registration-success-container button:hover {
-    background-color: #218838;
+	background-color: #218838;
 }
 
 /* Footer */

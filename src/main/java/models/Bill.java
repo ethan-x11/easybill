@@ -9,7 +9,22 @@ public class Bill {
     private double amount;
     private String paymentStatus;
     private long consumerId;
+    private String transactionId;
+    private String transactionDateTime;
 
+    public Bill(String billId, int unit, String month, String date, String dueDate, double amount, String paymentStatus, long consumerId, String transactionId, String transactionDateTime) {
+        this.billId = billId;
+        this.unit = unit;
+        this.month = month;
+        this.date = date;
+        this.dueDate = dueDate;
+        this.amount = amount;
+        this.paymentStatus = paymentStatus;
+        this.consumerId = consumerId;
+        this.transactionId = transactionId;
+        this.transactionDateTime = transactionDateTime;
+    }
+    
     public Bill(String billId, int unit, String month, String date, String dueDate, double amount, String paymentStatus, long consumerId) {
         this.billId = billId;
         this.unit = unit;
@@ -45,6 +60,12 @@ public class Bill {
 
     public long getConsumerId() { return consumerId; }
     public void setConsumerId(long consumerId) { this.consumerId = consumerId; }
+
+    public String getTransactionId() { return transactionId; }
+    public void setTransactionId(String transactionId) { this.transactionId = transactionId; }
+
+    public String getTransactionDateTime() { return transactionDateTime; }
+    public void setTransactionDateTime(String transactionDateTime) { this.transactionDateTime = transactionDateTime; }
 
     public void updatePaymentStatus(String newStatus) {
         this.paymentStatus = newStatus;

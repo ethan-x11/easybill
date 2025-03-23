@@ -5,9 +5,14 @@
 <title>Complaint Status</title>
 <link rel="stylesheet" type="text/css" href="css/styles.css">
 </head>
-
+<%
+    if (session != null && session.getAttribute("username") != null) {
+        %><%@ include file="fragments/navbarLoggedin.jsp" %><%
+    } else {
+        %><%@ include file="fragments/navbar.jsp" %><%
+    }
+%>
 <body>
-	<%@ include file="fragments/navbar.jsp"%>
 	<div class="complaint-search-container">
 		<h2>Check Complaint Status</h2>
 		<br> <label for="complaintId">Complaint Number:</label><br>
