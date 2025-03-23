@@ -15,7 +15,7 @@ import services.IConsumerService;
 @WebServlet("/RegistrationHandlerServlet")
 public class RegistrationHandlerServlet extends HttpServlet {
     private static final long serialVersionUID = 1L;
-    private IConsumerService consumerService;
+    private ConsumerService consumerService;
 
     @Override
     public void init() throws ServletException {

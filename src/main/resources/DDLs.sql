@@ -71,3 +71,4 @@ INSERT INTO complaint (complaintId, complaint_type, category, contact_person, co
 (1004, 'street_light', 'bulb', 'Bob Brown', 56165915919, '2233445566', '2023-04-25', 'Street light bulb is fused.', '321 Pine St', 'Behind Library'),
 (1005, 'pole', 'damaged_pole', 'Charlie Davis', 56165915919, '3344556677', '2023-05-30', 'Electric pole is damaged and leaning.', '654 Maple St', 'Near Hospital');
 
+SELECT c.name, c.consumerId, b.amount, b.due_date, b.payment_status FROM consumer c LEFT JOIN bill b ON c.consumerId = b.consumerId 

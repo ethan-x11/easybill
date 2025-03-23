@@ -7,6 +7,8 @@ import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.util.ArrayList;
+import java.util.List;
 
 public class ConsumerRepository {
 
@@ -56,5 +58,35 @@ public class ConsumerRepository {
                 }
             }
         }
+    }
+
+    public List<Consumer> searchConsumers(String query, String filter) throws SQLException {
+        String sql = "SELECT c.* FROM consumer c LEFT JOIN bill b ON c.consumerId = b.consumerId WHERE (c.name LIKE ? OR c.userId LIKE ?)";
+        if ("paid".equalsIgnoreCase(filter)) {
+            sql += " AND b.payment_status = 'Paid'";
+        } else if ("unpaid".equalsIgnoreCase(filter)) {
+            sql += " AND b.payment_status = 'Unpaid'";
+        }
+
+        List<Consumer> consumers = new ArrayList<>();
+        try (Connection connection = ConnectionManager.getConnection();
+             PreparedStatement statement = connection.prepareStatement(sql)) {
+            statement.setString(1, "%" + query + "%");
+            statement.setString(2, "%" + query + "%");
+            try (ResultSet resultSet = statement.executeQuery()) {
+                while (resultSet.next()) {
+                    Consumer consumer = new Consumer(
+                        resultSet.getLong("consumerId"),
+                        resultSet.getString("name"),
+                        resultSet.getString("email"),
+                        resultSet.getString("country_code"),
+                        resultSet.getString("mobile_number"),
+                        resultSet.getString("userId")
+                    );
+                    consumers.add(consumer);
+                }
+            }
+        }
+        return consumers;
     }
 }

@@ -4,17 +4,17 @@ import models.Consumer;
 import repositories.ConsumerRepository;
 import utils.PasswordEncryption;
 
-import java.sql.SQLException;
 import java.security.NoSuchAlgorithmException;
+import java.sql.SQLException;
+import java.util.List;
 
-public class ConsumerService implements IConsumerService {
-    private final ConsumerRepository consumerRepository;
+public class ConsumerService {
+    private ConsumerRepository consumerRepository;
 
     public ConsumerService() {
         this.consumerRepository = new ConsumerRepository();
     }
 
-    @Override
     public void registerConsumer(Consumer consumer, String password) throws SQLException, NoSuchAlgorithmException {
         consumerRepository.createConsumer(consumer);
         String hashedPassword = PasswordEncryption.hashPassword(password);
@@ -26,5 +26,7 @@ public class ConsumerService implements IConsumerService {
         return consumerRepository.validateConsumer(userId, hashedPassword);
     }
 
-    // Implement other methods as needed
+    public List<Consumer> searchConsumers(String query, String filter) throws SQLException {
+        return consumerRepository.searchConsumers(query, filter);
+    }
 }

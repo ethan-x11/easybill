@@ -161,39 +161,7 @@ body {
     background: #f0f0f0;
 }
 
-/* Register Customer Section */
-#registerForm {
-    display: flex;
-    flex-direction: column;
-    gap: 10px;
-    width: 300px;
-}
 
-#registerForm label {
-    font-weight: bold;
-}
-
-#registerForm input {
-    padding: 5px;
-    border: 1px solid #ccc;
-}
-
-#registerForm button {
-    padding: 5px 10px;
-    border: none;
-    background-color: #007bff;
-    color: white;
-    cursor: pointer;
-}
-
-#registerForm button:hover {
-    background-color: #0056b3;
-}
-
-#registrationMessage {
-    margin-top: 10px;
-    font-weight: bold;
-}
 
 /* View Complaints Section */
 #complaintsSearch {
@@ -237,82 +205,4 @@ body {
 
 #complaintsList th {
     background: #f0f0f0;
-}
-
-/* Create Bill Section */
-#billSearchContainer {
-    display: flex;
-    gap: 10px;
-    margin-top: 10px;
-}
-
-#billSearchBar {
-    width: 300px;
-    padding: 5px;
-    border: 1px solid #ccc;
-}
-
-#billSearchButton {
-    padding: 5px 10px;
-    border: 1px solid #ccc;
-    background-color: white;
-    cursor: pointer;
-}
-
-#billSearchButton:hover {
-    background-color: #e0e0e0;
-}
-
-#billSection {
-    margin-top: 20px;
-    display: none;
-}
-
-#billSection table {
-    width: 100%;
-    border-collapse: collapse;
-}
-
-#billSection th, #billSection td {
-    border: 1px solid #ccc;
-    padding: 8px;
-    text-align: left;
-}
-
-#billSection th {
-    background: #f0f0f0;
-}
-
-#billForm {
-    display: flex;
-    flex-direction: column;
-    gap: 10px;
-    width: 300px;
-    margin-top: 20px;
-}
-
-#billForm label {
-    font-weight: bold;
-}
-
-#billForm input, #billForm select {
-    padding: 5px;
-    border: 1px solid #ccc;
-}
-
-#billForm button {
-    padding: 5px 10px;
-    border: none;
-    background-color: #28a745;
-    color: white;
-    cursor: pointer;
-}
-
-#billForm button:hover {
-    background-color: #218838;
-}
-
-#billMessage {
-    margin-top: 10px;
-    font-weight: bold;
 }

@@ -23,4 +23,12 @@ public class BillService {
     public void updateBillPayment(long consumerId, String transactionId, String transactionDateTime, String paymentStatus) throws SQLException {
         billRepository.updateBillPayment(consumerId, transactionId, transactionDateTime, paymentStatus);
     }
+
+    public void createBill(Bill bill) throws SQLException {
+        billRepository.createBill(bill);
+    }
+
+    public List<Bill> searchConsumersForBill(String query) throws SQLException {
+        return billRepository.searchConsumersForBill(query);
+    }
 }
