@@ -1,0 +1,8 @@
+/.settings
+/.vscode
+/build
+*.class
+*.jar
+*.war
+/META-INF
+/target
