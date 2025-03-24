@@ -13,7 +13,7 @@ import java.util.List;
 public class ComplaintRepository {
 
     public void createComplaint(Complaint complaint) throws SQLException {
-        String sql = "INSERT INTO complaint (complaintId, complaint_type, category, contact_person, consumerId, mobile_number, complaint_date, problem_description, address, landmark, status) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)";
+        String sql = "INSERT INTO complaint (complaintId, complaint_type, category, contact_person, consumerId, mobile_number, complaint_date, problem_description, address, landmark) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?)";
         try (Connection connection = ConnectionManager.getConnection();
              PreparedStatement statement = connection.prepareStatement(sql)) {
             statement.setLong(1, complaint.getComplaintId());

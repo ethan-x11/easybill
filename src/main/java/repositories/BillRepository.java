@@ -65,7 +65,7 @@ public class BillRepository {
     }
 
     public void updateBillPayment(long consumerId, String transactionId, String transactionDateTime, String paymentStatus) throws SQLException {
-        String sql = "UPDATE bill SET transaction_id = ?, transaction_date_time = ?, payment_status = ? WHERE consumerId = ? AND payment_status = 'Unpaid'";
+        String sql = "UPDATE bill SET transaction_id = ?, transaction_date_time = ?, payment_status = ? WHERE consumerId = ? AND payment_status = 'unpaid'";
         try (Connection connection = ConnectionManager.getConnection();
             PreparedStatement statement = connection.prepareStatement(sql)) {
             statement.setString(1, transactionId);

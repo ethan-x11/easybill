@@ -142,6 +142,14 @@
         window.onload = function() {
             const today = new Date().toISOString().split('T')[0];
             document.getElementById('complaint_date').value = today;
+
+            // Check if session has consumerId and set it to consumer_no field
+            <% if (session != null && session.getAttribute("consumerId") != null) { %>
+                const consumerId = "<%= session.getAttribute("consumerId") %>";
+                const consumerNoField = document.getElementById('consumer_no');
+                consumerNoField.value = consumerId;
+                consumerNoField.readOnly = true;
+            <% } %>
         };
     </script>
 </body>
