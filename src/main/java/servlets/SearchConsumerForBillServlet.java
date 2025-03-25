@@ -31,6 +31,7 @@ public class SearchConsumerForBillServlet extends HttpServlet {
         try {
             List<Bill> bills = billService.searchConsumersForBill(searchQuery);
             for (Bill bill : bills) {
+                // System.out.println(bill.getBillId());
                 out.println("<tr><td>" + bill.getBillId() + "</td>");
                 out.println("<td>" + bill.getConsumerId() + "</td>");
                 out.println("<td>" + bill.getAmount() + "</td>");

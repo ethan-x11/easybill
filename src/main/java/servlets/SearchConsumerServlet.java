@@ -31,22 +31,26 @@ public class SearchConsumerServlet extends HttpServlet {
 
         try {
             List<Consumer> consumers = consumerService.searchConsumers(query, filter);
-            out.println("[");
+            StringBuilder jsonBuilder = new StringBuilder();
+            jsonBuilder.append("[");
+
             for (int i = 0; i < consumers.size(); i++) {
                 Consumer consumer = consumers.get(i);
-                out.println("{");
-                out.println("\"consumerId\": \"" + consumer.getConsumerId() + "\",");
-                out.println("\"name\": \"" + consumer.getName() + "\",");
-                out.println("\"email\": \"" + consumer.getEmail() + "\",");
-                out.println("\"countryCode\": \"" + consumer.getCountryCode() + "\",");
-                out.println("\"mobileNumber\": \"" + consumer.getMobileNumber() + "\",");
-                out.println("\"userId\": \"" + consumer.getUserId() + "\"");
-                out.println("}");
+                jsonBuilder.append("{");
+                jsonBuilder.append("\"consumerId\": \"").append(consumer.getConsumerId()).append("\",");
+                jsonBuilder.append("\"name\": \"").append(consumer.getName()).append("\",");
+                jsonBuilder.append("\"email\": \"").append(consumer.getEmail()).append("\",");
+                jsonBuilder.append("\"countryCode\": \"").append(consumer.getCountryCode()).append("\",");
+                jsonBuilder.append("\"mobileNumber\": \"").append(consumer.getMobileNumber()).append("\",");
+                jsonBuilder.append("\"userId\": \"").append(consumer.getUserId()).append("\"");
+                jsonBuilder.append("}");
                 if (i < consumers.size() - 1) {
-                    out.println(",");
+                    jsonBuilder.append(",");
                 }
             }
-            out.println("]");
+
+            jsonBuilder.append("]");
+            out.print(jsonBuilder.toString());
         } catch (SQLException e) {
             e.printStackTrace();
             response.setStatus(HttpServletResponse.SC_INTERNAL_SERVER_ERROR);

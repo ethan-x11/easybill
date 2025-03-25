@@ -72,6 +72,7 @@
             fetch("SearchConsumerForBillServlet?query=" + searchQuery)
                 .then(response => response.text())
                 .then(data => {
+                    console.log(data);
                     document.getElementById("billTableBody").innerHTML = data;
                     document.getElementById("billTable").style.display = "table"; 
                 })

@@ -96,7 +96,7 @@ public class BillRepository {
 
     public List<Bill> searchConsumersForBill(String query) throws SQLException {
         List<Bill> bills = new ArrayList<>();
-        String sql = "SELECT c.name, c.consumerId, b.amount, b.due_date, b.payment_status FROM consumer c LEFT JOIN bill b ON c.consumerId = b.consumerId WHERE c.name LIKE ? OR c.consumerId LIKE ?";
+        String sql = "SELECT * FROM consumer c LEFT JOIN bill b ON c.consumerId = b.consumerId WHERE c.name LIKE ? OR c.consumerId LIKE ?";
         try (Connection connection = ConnectionManager.getConnection();
              PreparedStatement statement = connection.prepareStatement(sql)) {
             statement.setString(1, "%" + query + "%");
