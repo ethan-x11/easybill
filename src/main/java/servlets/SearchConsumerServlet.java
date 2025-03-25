@@ -12,6 +12,8 @@ import java.io.PrintWriter;
 import java.sql.SQLException;
 import java.util.List;
 
+import dao.ConsumerWithBillInfo;
+
 @WebServlet("/SearchConsumerServlet")
 public class SearchConsumerServlet extends HttpServlet {
     private static final long serialVersionUID = 1L;
@@ -30,7 +32,7 @@ public class SearchConsumerServlet extends HttpServlet {
         PrintWriter out = response.getWriter();
 
         try {
-            List<Consumer> consumers = consumerService.searchConsumers(query, filter);
+            List<ConsumerWithBillInfo> consumers = consumerService.searchConsumers(query, filter);
             StringBuilder jsonBuilder = new StringBuilder();
             jsonBuilder.append("[");
 

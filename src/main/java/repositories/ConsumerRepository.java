@@ -10,6 +10,8 @@ import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
 
+import dao.ConsumerWithBillInfo;
+
 public class ConsumerRepository {
 
     public void createConsumer(Consumer consumer) throws SQLException {
@@ -60,28 +62,36 @@ public class ConsumerRepository {
         }
     }
 
-    public List<Consumer> searchConsumers(String query, String filter) throws SQLException {
-        String sql = "SELECT c.* FROM consumer c LEFT JOIN bill b ON c.consumerId = b.consumerId WHERE (c.name LIKE ? OR c.userId LIKE ?)";
-        if ("paid".equalsIgnoreCase(filter)) {
+    public List<ConsumerWithBillInfo> searchConsumers(String query, String filter) throws SQLException {
+        String sql = "SELECT c.consumerId, c.name, c.email, c.country_code, c.mobile_number, c.userId, " +
+                     "b.amount AS latestBillAmount, b.month AS latestBillMonth, b.date AS latestBillDate " +
+                     "FROM consumer c " +
+                     "LEFT JOIN bill b ON c.consumerId = b.consumerId " +
+                     "WHERE (c.name LIKE ? OR c.userId LIKE ?)";
+
+        if ("Paid".equalsIgnoreCase(filter)) {
             sql += " AND b.payment_status = 'Paid'";
-        } else if ("unpaid".equalsIgnoreCase(filter)) {
+        } else if ("Unpaid".equalsIgnoreCase(filter)) {
             sql += " AND b.payment_status = 'Unpaid'";
         }
 
-        List<Consumer> consumers = new ArrayList<>();
+        List<ConsumerWithBillInfo> consumers = new ArrayList<>();
         try (Connection connection = ConnectionManager.getConnection();
              PreparedStatement statement = connection.prepareStatement(sql)) {
             statement.setString(1, "%" + query + "%");
             statement.setString(2, "%" + query + "%");
             try (ResultSet resultSet = statement.executeQuery()) {
                 while (resultSet.next()) {
-                    Consumer consumer = new Consumer(
+                    ConsumerWithBillInfo consumer = new ConsumerWithBillInfo(
                         resultSet.getLong("consumerId"),
                         resultSet.getString("name"),
                         resultSet.getString("email"),
                         resultSet.getString("country_code"),
                         resultSet.getString("mobile_number"),
-                        resultSet.getString("userId")
+                        resultSet.getString("userId"),
+                        resultSet.getDouble("latestBillAmount"),
+                        resultSet.getString("latestBillMonth"),
+                        resultSet.getDate("latestBillDate")
                     );
                     consumers.add(consumer);
                 }

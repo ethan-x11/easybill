@@ -79,3 +79,10 @@ SELECT * FROM logindata;
 SELECT * FROM bill;
 SELECT * FROM complaint;
 
+
+SELECT * FROM consumer c LEFT JOIN bill b ON c.consumerId = b.consumerId WHERE c.name LIKE "%%"
+
+
+SELECT * FROM bill WHERE consumerId = 1234567890123 AND (billId LIKE "%%" OR month LIKE "%%") ORDER BY date DESC
+
+SELECT * FROM bill WHERE consumerId = 2456784578457 AND (billId LIKE "%%" OR month LIKE "%%") ORDER BY date DESC

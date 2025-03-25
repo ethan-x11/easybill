@@ -33,7 +33,7 @@ public class FinalPaymentServlet extends HttpServlet {
                 String transactionId = (String) session.getAttribute("transactionId");
                 String transactionDateTime = (String) session.getAttribute("transactionDateTime");
                 try {
-                    billService.updateBillPayment(currentBill.getConsumerId(), transactionId, transactionDateTime, "Paid");
+                    billService.updateBillPayment(currentBill.getConsumerId(), transactionId, transactionDateTime, "paid");
                 } catch (SQLException e) {
                     throw new ServletException("Database error while updating bill payment", e);
                 }

@@ -18,12 +18,13 @@
         <h3>Generate New Bill</h3>
         <form id="billForm" action="CreateBillServlet" method="post">
             <input type="text" id="billCustomerId" name="billCustomerId" class="cb-input-field" required placeholder="Customer ID"><br>
+            <input type="hidden" id="createBillConsumerId" name="consumerId">
             <input type="number" id="billUnit" name="billUnit" class="cb-input-field" required placeholder="Unit"><br>
             <input type="number" id="billAmount" name="billAmount" class="cb-input-field" required placeholder="Bill Amount"><br>
             <input type="date" id="billDate" name="billDate" class="cb-input-field" required><br>
             <select id="billStatus" name="billStatus" class="cb-select-field">
-                <option value="unpaid">Unpaid</option>
-                <option value="paid">Paid</option>
+                <option value="Unpaid">Unpaid</option>
+                <option value="Paid">Paid</option>
             </select><br>
             <button type="submit" class="cb-submit-button">Submit Bill</button>
         </form>

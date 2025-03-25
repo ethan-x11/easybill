@@ -121,4 +121,33 @@ public class BillRepository {
         }
         return bills;
     }
+
+    public List<Bill> searchBills(String consumerId, String query) throws SQLException {
+        List<Bill> bills = new ArrayList<>();
+        String sql = "SELECT * FROM bill WHERE consumerId = ? AND (billId LIKE ? OR month LIKE ?) ORDER BY date DESC";
+        try (Connection connection = ConnectionManager.getConnection();
+             PreparedStatement statement = connection.prepareStatement(sql)) {
+            statement.setLong(1, Long.parseLong(consumerId));
+            statement.setString(2, "%" + query + "%");
+            statement.setString(3, "%" + query + "%");
+            try (ResultSet resultSet = statement.executeQuery()) {
+                while (resultSet.next()) {
+                    Bill bill = new Bill(
+                        resultSet.getString("billId"),
+                        resultSet.getLong("consumerId"),
+                        resultSet.getInt("unit"),
+                        resultSet.getString("month"),
+                        resultSet.getDouble("amount"),
+                        resultSet.getDate("date").toLocalDate(),
+                        resultSet.getDate("due_date").toLocalDate(),
+                        resultSet.getString("payment_status"),
+                        resultSet.getString("transaction_id"),
+                        resultSet.getTimestamp("transaction_date_time") != null ? resultSet.getTimestamp("transaction_date_time").toLocalDateTime() : null
+                    );
+                    bills.add(bill);
+                }
+            }
+        }
+        return bills;
+    }
 }

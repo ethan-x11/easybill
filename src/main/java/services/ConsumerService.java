@@ -1,6 +1,7 @@
 package services;
 
 import models.Consumer;
+import dao.ConsumerWithBillInfo;
 import repositories.ConsumerRepository;
 import utils.PasswordEncryption;
 
@@ -26,7 +27,7 @@ public class ConsumerService {
         return consumerRepository.validateConsumer(userId, hashedPassword);
     }
 
-    public List<Consumer> searchConsumers(String query, String filter) throws SQLException {
+    public List<ConsumerWithBillInfo> searchConsumers(String query, String filter) throws SQLException {
         return consumerRepository.searchConsumers(query, filter);
     }
 }

@@ -31,4 +31,8 @@ public class BillService {
     public List<Bill> searchConsumersForBill(String query) throws SQLException {
         return billRepository.searchConsumersForBill(query);
     }
+
+    public List<Bill> searchBills(String consumerId, String query) throws SQLException {
+        return billRepository.searchBills(consumerId, query);
+    }
 }
