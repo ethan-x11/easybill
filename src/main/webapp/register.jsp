@@ -5,44 +5,17 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Register</title>
-    <style>
-        body {
-            font-family: Arial, sans-serif;
-            background-color: #f4f4f4;
-            text-align: center;
-        }
-        form {
-            background: white;
-            
-            padding: 20px;
-            border-radius: 8px;
-            width: 300px;
-            margin: auto;
-            box-shadow: 0px 0px 10px gray;
-        }
-        input, select {
-            width: 90%;
-            padding: 8px;
-            margin: 5px 0;
-        }
-        button {
-            background-color: blue;
-            color: white;
-            padding: 10px;
-            border: none;
-            cursor: pointer;
-        }
-    </style>
+    <link rel="stylesheet" type="text/css" href="css/admin.css">
 </head>
 <body>
     <div class="reg-container">
         <h2 class="reg-title">Registration</h2>
-        <div id="error-message" class="error-message"></div>
+        <div id="error-message" class="reg-error-message"></div>
         <%
             String successMessage = (String) request.getAttribute("successMessage");
             if (successMessage != null) {
         %>
-            <div class="success-message"><%= successMessage %></div>
+            <div class="reg-success-message"><%= successMessage %></div>
         <%
             }
         %>

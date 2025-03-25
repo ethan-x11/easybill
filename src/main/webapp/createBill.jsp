@@ -4,81 +4,42 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" type="text/css" href="css/admin.css">
     <title>Create Bill</title>
     <style>
-        body {
-            font-family: Arial, sans-serif;
-            background-color: #f4f4f4;
-            text-align: center;
-        }
-        .container {
-            width: 400px;
-            margin: auto;
-            background: white;
-            padding: 20px;
-            border-radius: 8px;
-            box-shadow: 0px 0px 10px gray;
-            display: block; /* Initially visible */
-        }
-        .search-container {
-            display: none; /* Initially hidden */
-            margin-top: 20px;
-        }
-        input, select {
-            width: 90%;
-            padding: 8px;
-            margin: 5px 0;
-        }
-        button {
-            background-color: blue;
-            color: white;
-            padding: 10px;
-            border: none;
-            cursor: pointer;
-            width: 100%;
-        }
-        table {
-            width: 90%;
-            margin: auto;
-            border-collapse: collapse;
-            display: none; /* Initially hidden */
-        }
-        th, td {
-            border: 1px solid gray;
-            padding: 8px;
-        }
+        
     </style>
 </head>
 <body>
     <h2>Create Bill</h2>
 
     <!-- Bill Form (Initially Visible) -->
-    <div class="container" id="billFormContainer">
+    <div class="cb-container" id="billFormContainer">
         <h3>Generate New Bill</h3>
         <form id="billForm" action="CreateBillServlet" method="post">
-            <input type="text" id="billCustomerId" name="billCustomerId" required placeholder="Customer ID"><br>
-            <input type="number" id="billUnit" name="billUnit" required placeholder="Unit"><br>
-            <input type="number" id="billAmount" name="billAmount" required placeholder="Bill Amount"><br>
-            <input type="date" id="billDate" name="billDate" required><br>
-            <select id="billStatus" name="billStatus">
+            <input type="text" id="billCustomerId" name="billCustomerId" class="cb-input-field" required placeholder="Customer ID"><br>
+            <input type="number" id="billUnit" name="billUnit" class="cb-input-field" required placeholder="Unit"><br>
+            <input type="number" id="billAmount" name="billAmount" class="cb-input-field" required placeholder="Bill Amount"><br>
+            <input type="date" id="billDate" name="billDate" class="cb-input-field" required><br>
+            <select id="billStatus" name="billStatus" class="cb-select-field">
                 <option value="unpaid">Unpaid</option>
                 <option value="paid">Paid</option>
             </select><br>
-            <button type="submit">Submit Bill</button>
+            <button type="submit" class="cb-submit-button">Submit Bill</button>
         </form>
         <p id="billMessage"></p>
-        <button onclick="showSearch()">Search for Existing Customer</button>
+        <button onclick="showSearch()" class="cb-search-button">Search for Existing Customer</button>
     </div>
 
     <!-- Search Section (Initially Hidden) -->
-    <div class="search-container" id="searchContainer">
-        <input type="text" id="billSearchBar" placeholder="Enter customer name or ID">
-        <button id="searchBillButton">Search</button>
-        <button onclick="showForm()">Back</button>
+    <div class="cb-search-container" id="searchContainer">
+        <input type="text" id="billSearchBar" class="cb-input-field" placeholder="Enter customer name or ID">
+        <button id="searchBillButton" class="cb-search-button">Search</button>
+        <button onclick="showForm()" class="cb-back-button">Back</button>
     </div>
 
     <!-- Search Results (Initially Hidden) -->
-    <table id="billTable">
+    <table id="billTable" class="cb-bill-table">
         <thead>
             <tr>
                 <th>Customer Name</th>

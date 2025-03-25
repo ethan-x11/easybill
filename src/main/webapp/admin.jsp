@@ -71,7 +71,7 @@
 
         <!-- 3. View Complaints Section -->
         <div id="complaints" class="operation">
-            <%@ include file="complain.jsp" %>
+            <%@ include file="complaint.jsp" %>
         </div>
 
         <!-- 4. Create Bill Section -->
