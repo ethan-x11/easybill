@@ -18,7 +18,7 @@ public class LoginHandlerServlet extends HttpServlet {
     private static final long serialVersionUID = 1L;
     private ConsumerService consumerService;
     private AdminService adminService;
-
+    
     @Override
     public void init() throws ServletException {
         this.consumerService = new ConsumerService();

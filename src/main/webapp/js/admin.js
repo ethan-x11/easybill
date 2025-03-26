@@ -94,9 +94,23 @@ function loadBills(consumerId) {
             var billTableBody = document.getElementById("billTableBody");
             billTableBody.innerHTML = "";
 
-            // Create and display the consumer card
             var consumerCard = document.getElementById("consumerCard");
-            var latestBill = data[0]; 
+
+            if (!data[0]) {
+                consumerCard.innerHTML = `
+                    <div class="card">
+                        <div class="card-body">
+                            <h5 class="card-title">Consumer ID: ${consumerId}</h5>
+                            <p class="card-text">No Bill Generated</p>
+                        </div>
+                    </div>
+                `;
+                consumerCard.style.display = "block";
+                loadPage('bill');
+                return;
+            }
+
+            var latestBill = data[0];
             consumerCard.innerHTML = `
                 <div class="card">
                     <div class="card-body">
@@ -240,12 +254,116 @@ function createBill() {
     loadPage('createBill');
 }
 
+function searchComplaints() {
+    var query = document.getElementById("complaintsSearchBar").value;
+    var filter = document.getElementById("complaintsFilter").value;
+    var url = "ComplaintsManagerServlet?query=" + query + "&filter=" + filter;
+
+    fetch(url)
+        .then(response => response.json())
+        .then(data => {
+            var complaintsTableBody = document.getElementById("complaintsTableBody");
+            complaintsTableBody.innerHTML = "";
+            data.forEach(complaint => {
+                var row = document.createElement("tr");
+                row.dataset.complaintId = complaint.complaintId;
+                row.innerHTML = `
+                    <td>${complaint.complaintId}</td>
+                    <td>${complaint.complaintType}</td>
+                    <td>${complaint.category}</td>
+                    <td>${complaint.contactPerson}</td>
+                    <td>${complaint.consumerId}</td>
+                    <td>${complaint.mobileNumber}</td>
+                    <td>${complaint.complaintDate}</td>
+                    <td>${complaint.problemDescription}</td>
+                    <td>${complaint.address}</td>
+                    <td>${complaint.landmark}</td>
+                    <td data-field="status">${complaint.status}</td>
+                    <td><button onclick="editComplaint(${complaint.complaintId})">Edit</button></td>
+                `;
+                complaintsTableBody.appendChild(row);
+            });
+        })
+        .catch(error => console.error('Error:', error));
+}
+
+function editComplaint(complaintId) {
+    var row = document.querySelector(`tr[data-complaint-id="${complaintId}"]`);
+    if (!row) {
+        console.error(`Row with complaintId ${complaintId} not found`);
+        return;
+    }
+
+    var cell = row.querySelector("td[data-field='status']");
+    var status = cell.innerText;
+    var select = document.createElement("select");
+    ["Pending", "Resolved"].forEach(optionValue => {
+        var option = document.createElement("option");
+        option.value = optionValue;
+        option.text = optionValue;
+        if (status === optionValue) {
+            option.selected = true;
+        }
+        select.appendChild(option);
+    });
+
+    cell.innerHTML = "";
+    cell.appendChild(select);
+
+    var editButton = row.querySelector("button");
+    if (!editButton) {
+        console.error(`Edit button for complaintId ${complaintId} not found`);
+        return;
+    }
+
+    editButton.innerText = "Save";
+    editButton.onclick = function() { saveComplaint(complaintId); };
+}
+
+function saveComplaint(complaintId) {
+    var row = document.querySelector(`tr[data-complaint-id="${complaintId}"]`);
+    var cell = row.querySelector("td[data-field='status']");
+    var status = cell.querySelector("select").value;
+
+    var data = new URLSearchParams();
+    data.append("complaintId", complaintId);
+    data.append("status", status);
+
+    fetch("ComplaintsManagerServlet", {
+        method: "POST",
+        body: data
+    }).then(response => {
+        var successMessageElement = document.getElementById("complaintSuccessMessage");
+        var errorMessageElement = document.getElementById("complaintErrorMessage");
+        if (response.ok) {
+            successMessageElement.style.display = "block";
+            errorMessageElement.style.display = "none";
+            searchComplaints();
+        } else {
+            successMessageElement.style.display = "none";
+            errorMessageElement.style.display = "block";
+            console.error('Error saving complaint:', response.statusText);
+        }
+    }).catch(error => {
+        var successMessageElement = document.getElementById("complaintSuccessMessage");
+        var errorMessageElement = document.getElementById("complaintErrorMessage");
+        successMessageElement.style.display = "none";
+        errorMessageElement.style.display = "block";
+        console.error('Error:', error);
+    });
+}
+
 // Load consumers on page load
 document.addEventListener("DOMContentLoaded", function() {
     searchConsumers();
+    searchComplaints();
 });
 
-
-
+function confirmLogout(event) {
+    event.preventDefault();
+    if (confirm("Are you sure you want to logout?")) {
+        document.getElementById("logoutForm").submit();
+    }
+}
 
 

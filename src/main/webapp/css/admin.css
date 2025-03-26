@@ -133,7 +133,7 @@ body {
 #searchButton {
     padding: 5px 10px;
     border: 1px solid #ccc;
-    background-color: white;
+    background-color: black;
     cursor: pointer;
 }
 
@@ -230,7 +230,7 @@ body {
 #complaintsSearchButton {
     padding: 5px 10px;
     border: 1px solid #ccc;
-    background-color: white;
+    background-color: black;
     cursor: pointer;
 }
 
@@ -240,7 +240,7 @@ body {
 
 #complaintsList {
     margin-top: 20px;
-    display: none;
+    display: block;
 }
 
 #complaintsList table {

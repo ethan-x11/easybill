@@ -1,4 +1,10 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"%>
+<%
+    if (session == null || session.getAttribute("username") == null) {
+        response.sendRedirect("login.jsp");
+        return;
+    }
+%>
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -24,13 +30,24 @@
             </ul>
             <ul class="navbar-nav ml-auto">
                 <li class="nav-item">
-                    <span class="nav-link">John Doe</span>
+                    <span class="nav-link">
+                        <%
+                            String username = (String) session.getAttribute("username");
+                            if (username != null) {
+                                out.print(username);
+                            } else {
+                                out.print("Admin");
+                            }
+                        %>
+                    </span>
                 </li>
                 <li class="nav-item">
-                    <span class="nav-link">johndoe@example.com</span>
+                    <span class="nav-link">admin@admin.com</span>
                 </li>
                 <li class="nav-item">
-                    <button class="btn btn-outline-secondary" onclick="logout()">Logout</button>
+                <form id="logoutForm" action="LogoutServlet" method="get">
+                    <button class="btn btn-outline-secondary" onclick="confirmLogout(event)">Logout</button>
+                </form>
                 </li>
             </ul>
         </div>
@@ -53,13 +70,16 @@
             <div id="home" class="operation active">
                 <h2>Welcome to Admin Page</h2>
                 <p>Select an operation from the sidebar.</p>
+                <div class="text-center">
+                    <img src="images/bg-admin.png" alt="Admin Background" style="width: 800px; height: auto;">
+                </div>
             </div>
             
             <!-- 1. Search Customer Section -->
             <div id="consumers" class="operation">
                 <h2>Customer Search</h2>
                 <div id="searchContainer" class="d-flex mb-3">
-                    <input type="text" id="searchBar" class="form-control mr-2" placeholder="Search by name or ID">
+                    <input type="text" id="searchBar" class="form-control mr-2" placeholder="Search by name or ID" style="width: 400px;">
                     <select id="filterOptions" class="form-control mr-2">
                         <option value="">View All</option>
                         <option value="Paid">Paid</option>

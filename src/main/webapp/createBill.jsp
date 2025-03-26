@@ -27,29 +27,6 @@
         </form>
     </div>
 
-    <%-- <!-- Search Section (Initially Hidden) -->
-    <div class="cb-search-container" id="searchContainer">
-        <input type="text" id="billSearchBar" class="cb-input-field" placeholder="Enter customer name or ID">
-        <button id="searchBillButton" class="cb-search-button">Search</button>
-        <button onclick="showForm()" class="cb-back-button">Back</button>
-    </div>
-
-    <!-- Search Results (Initially Hidden) -->
-    <table id="billTable" class="cb-bill-table">
-        <thead>
-            <tr>
-                <th>Customer Name</th>
-                <th>ID</th>
-                <th>Previous Bill</th>
-                <th>Due Date</th>
-                <th>Status</th>
-                <th>Amount</th>
-                <th>Action</th>
-            </tr>
-        </thead>
-        <tbody id="billTableBody"></tbody>
-    </table> --%>
-
     <script>
         document.getElementById("billForm").addEventListener("submit", function(event) {
             event.preventDefault();
@@ -94,19 +71,6 @@
             document.getElementById("searchContainer").style.display = "none";
             document.getElementById("billTable").style.display = "none";
         }
-
-        document.getElementById("searchBillButton").addEventListener("click", function() {
-            let searchQuery = document.getElementById("billSearchBar").value;
-            
-            fetch("SearchConsumerForBillServlet?query=" + searchQuery)
-                .then(response => response.text())
-                .then(data => {
-                    console.log(data);
-                    document.getElementById("billTableBody").innerHTML = data;
-                    document.getElementById("billTable").style.display = "table"; 
-                })
-                .catch(error => console.error("Error fetching consumer data:", error));
-        });
 
         function setCustomerId(consumerId) {
             document.getElementById("billCustomerId").value = consumerId;

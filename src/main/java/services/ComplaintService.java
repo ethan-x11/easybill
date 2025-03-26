@@ -28,4 +28,12 @@ public class ComplaintService {
     public List<Complaint> searchComplaints(String query) throws SQLException {
         return complaintRepository.searchComplaints(query);
     }
+
+    public List<Complaint> searchComplaints(String query, String filter) throws SQLException {
+        return complaintRepository.searchComplaints(query, filter);
+    }
+
+    public int updateComplaintStatus(long complaintId, String status) throws SQLException {
+        return complaintRepository.updateComplaintStatus(complaintId, status);
+    }
 }
