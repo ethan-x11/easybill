@@ -386,3 +386,37 @@ body {
 .reg-success-message {
     color: green;
 }
+
+/* Add these styles to the existing admin.css file */
+
+.message {
+    display: none;
+    padding: 10px;
+    margin-bottom: 10px;
+    border-radius: 5px;
+}
+
+.message .success {
+    background-color: #d4edda;
+    color: #155724;
+}
+
+.message .error {
+    background-color: #f8d7da;
+    color: #721c24;
+}
+
+.active-item {
+    background-color: #007bff;
+    color: white;
+}
+
+.success {
+    background-color: #d4edda;
+    color: #155724;
+}
+
+.error {
+    background-color: #f8d7da;
+    color: #721c24;
+}

@@ -86,3 +86,33 @@ SELECT * FROM consumer c LEFT JOIN bill b ON c.consumerId = b.consumerId WHERE c
 SELECT * FROM bill WHERE consumerId = 1234567890123 AND (billId LIKE "%%" OR month LIKE "%%") ORDER BY date DESC
 
 SELECT * FROM bill WHERE consumerId = 2456784578457 AND (billId LIKE "%%" OR month LIKE "%%") ORDER BY date DESC
+
+SELECT c.consumerId, c.name, c.email, c.country_code, c.mobile_number, c.userId,
+    b.amount AS latestBillAmount, b.month AS latestBillMonth, b.date AS latestBillDate
+FROM consumer c
+LEFT JOIN bill b ON c.consumerId = b.consumerId
+GROUP BY c.consumerId;
+
+SELECT c.consumerId, c.name, c.email, c.country_code, c.mobile_number, c.userId,
+                     b.amount AS latestBillAmount, b.month AS latestBillMonth, b.date AS latestBillDate
+                     FROM consumer c 
+                     LEFT JOIN bill b ON c.consumerId = b.consumerId
+                     WHERE (c.name LIKE "%%" OR c.userId LIKE "%%")
+                    --  GROUP BY c.consumerId
+                     AND b.payment_status = 'Paid';
+
+SELECT c.consumerId, c.name, c.email, c.country_code, c.mobile_number, c.userId,
+       b.amount AS latestBillAmount, b.month AS latestBillMonth, b.date AS latestBillDate
+FROM consumer c
+LEFT JOIN (
+    SELECT b1.*
+    FROM bill b1
+    INNER JOIN (
+        SELECT consumerId, MAX(date) AS latestDate
+        FROM bill
+        GROUP BY consumerId
+    ) b2 ON b1.consumerId = b2.consumerId AND b1.date = b2.latestDate
+) b ON c.consumerId = b.consumerId
+WHERE (c.name LIKE "%%" OR c.userId LIKE "%%")
+--  GROUP BY c.consumerId
+AND b.payment_status = 'Unpaid';;

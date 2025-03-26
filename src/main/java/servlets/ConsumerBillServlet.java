@@ -10,6 +10,10 @@ import jakarta.servlet.http.HttpServletResponse;
 import java.io.IOException;
 import java.sql.SQLException;
 import java.util.List;
+import java.time.LocalDate;
+import java.time.format.DateTimeFormatter;
+import java.time.format.DateTimeParseException;
+import java.io.BufferedReader;
 
 @WebServlet("/ConsumerBillServlet")
 public class ConsumerBillServlet extends HttpServlet {
@@ -27,17 +31,78 @@ public class ConsumerBillServlet extends HttpServlet {
         if (query == null) {
             query = "";
         }
-        System.out.println("query = " + query);
         try {
             List<Bill> bills = billService.searchBills(consumerId, query);
-            for (Bill bill : bills) {
-                System.out.println(bill.getBillId());
-            }
             response.setContentType("application/json");
             response.setCharacterEncoding("UTF-8");
             response.getWriter().write(buildJsonResponse(bills));
         } catch (SQLException e) {
             throw new ServletException("Error retrieving bills", e);
+        }
+    }
+
+    @Override
+    protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+        StringBuilder jsonBuffer = new StringBuilder();
+        String line;
+        try (BufferedReader reader = request.getReader()) {
+            while ((line = reader.readLine()) != null) {
+                jsonBuffer.append(line);
+            }
+        }
+
+        String jsonString = jsonBuffer.toString();
+        Bill bill = new Bill();
+        bill.setBillId(request.getParameter("billId"));
+        // Manually parse the JSON string
+        jsonString = jsonString.replace("{", "").replace("}", "").replace("\"", "");
+        String[] keyValuePairs = jsonString.split(",");
+        for (String pair : keyValuePairs) {
+            String[] entry = pair.split(":");
+            String key = entry[0].trim();
+            String value = entry[1].trim();
+
+            System.out.println("Key: " + key + ", Value: " + value);
+
+            switch (key) {
+                case "billUnit":
+                    bill.setUnit(Integer.parseInt(value));
+                    break;
+                case "billMonth":
+                    bill.setMonth(value);
+                    break;
+                case "amount":
+                    bill.setAmount(Double.parseDouble(value));
+                    break;
+                case "billDate":
+                    DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd");
+                    try {
+                        LocalDate localDate = LocalDate.parse(value, formatter);
+                        bill.setDate(localDate.toString());
+
+                        LocalDate dueDate = localDate.plusDays(15);
+                        bill.setDueDate(dueDate.toString());
+                    } catch (DateTimeParseException e) {
+                        throw new ServletException("Error parsing date", e);
+                    }
+                    break;
+                case "paymentStatus":
+                    bill.setPaymentStatus(value);
+                    break;
+            }
+        }
+
+        try {
+            int status = billService.updateBill(bill);
+            System.out.println("Status: " + status);
+            System.out.println("Bill ID: " + bill.getBillId());
+            if (status == 0) {
+                response.setStatus(HttpServletResponse.SC_NOT_FOUND);
+            } else {
+                response.setStatus(HttpServletResponse.SC_OK);
+            }
+        } catch (SQLException e) {
+            throw new ServletException("Error updating bill", e);
         }
     }
 
@@ -62,7 +127,6 @@ public class ConsumerBillServlet extends HttpServlet {
             }
         }
         json.append("]");
-        System.out.println("JSON - " + json.toString());
         return json.toString();
     }
 }

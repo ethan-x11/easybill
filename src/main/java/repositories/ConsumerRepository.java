@@ -64,10 +64,18 @@ public class ConsumerRepository {
 
     public List<ConsumerWithBillInfo> searchConsumers(String query, String filter) throws SQLException {
         String sql = "SELECT c.consumerId, c.name, c.email, c.country_code, c.mobile_number, c.userId, " +
-                     "b.amount AS latestBillAmount, b.month AS latestBillMonth, b.date AS latestBillDate " +
-                     "FROM consumer c " +
-                     "LEFT JOIN bill b ON c.consumerId = b.consumerId " +
-                     "WHERE (c.name LIKE ? OR c.userId LIKE ?)";
+                 "b.amount AS latestBillAmount, b.month AS latestBillMonth, b.date AS latestBillDate " +
+                 "FROM consumer c " +
+                 "LEFT JOIN ( " +
+                 "    SELECT b1.* " +
+                 "    FROM bill b1 " +
+                 "    INNER JOIN ( " +
+                 "        SELECT consumerId, MAX(date) AS latestDate " +
+                 "        FROM bill " +
+                 "        GROUP BY consumerId " +
+                 "    ) b2 ON b1.consumerId = b2.consumerId AND b1.date = b2.latestDate " +
+                 ") b ON c.consumerId = b.consumerId " +
+                 "WHERE (c.name LIKE ? OR c.userId LIKE ?)"; 
 
         if ("Paid".equalsIgnoreCase(filter)) {
             sql += " AND b.payment_status = 'Paid'";

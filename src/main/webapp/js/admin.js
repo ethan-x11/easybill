@@ -11,9 +11,22 @@ function toggleSidebar() {
 }
 
 // Load Selected Operation
-function loadPage(page) {
-    document.querySelectorAll('.operation').forEach(op => op.classList.remove('active'));
-    document.getElementById(page).classList.add('active');
+function loadPage(pageId) {
+    // Hide all operations
+    document.querySelectorAll('.operation').forEach(function (operation) {
+        operation.classList.remove('active');
+    });
+
+    // Show the selected operation
+    document.getElementById(pageId).classList.add('active');
+
+    // Remove active-item class from all sidebar items
+    document.querySelectorAll('.sidebar ul li').forEach(function (item) {
+        item.classList.remove('active-item');
+    });
+
+    // Add active-item class to the selected sidebar item
+    document.querySelector(`.sidebar ul li[onclick="loadPage('${pageId}')"]`).classList.add('active-item');
 }
 
 function searchConsumers() {
@@ -48,7 +61,7 @@ function searchConsumers() {
 
 function searchBills() {
     var query = document.getElementById("billSearchBar").value;
-    var consumerId = document.getElementById("createBillConsumerId").value;
+    var consumerId = document.getElementById("billConsumerId").value;
     var url = "ConsumerBillServlet?consumerId=" + consumerId + "&query=" + query;
 
     fetch(url)
@@ -80,6 +93,22 @@ function loadBills(consumerId) {
         .then(data => {
             var billTableBody = document.getElementById("billTableBody");
             billTableBody.innerHTML = "";
+
+            // Create and display the consumer card
+            var consumerCard = document.getElementById("consumerCard");
+            var latestBill = data[0]; 
+            consumerCard.innerHTML = `
+                <div class="card">
+                    <div class="card-body">
+                        <h5 class="card-title">Consumer ID: ${consumerId}</h5>
+                        <p class="card-text">Latest Bill Amount: ${latestBill.amount}</p>
+                        <p class="card-text">Latest Bill Date: ${latestBill.date}</p>
+                        <p class="card-text">Payment Status: ${latestBill.paymentStatus}</p>
+                    </div>
+                </div>
+            `;
+            consumerCard.style.display = "block";
+
             data.forEach(bill => {
                 var row = document.createElement("tr");
                 row.dataset.billId = bill.billId;
@@ -87,13 +116,14 @@ function loadBills(consumerId) {
                     <td data-field="billId">${bill.billId}</td>
                     <td data-field="billMonth">${bill.month}</td>
                     <td data-field="billDate">${bill.date}</td>
+                    <td data-field="billUnit">${bill.unit}</td>
                     <td data-field="amount">${bill.amount}</td>
                     <td data-field="paymentStatus">${bill.paymentStatus}</td>
-                    <td><button onclick="editBill(${bill.billId})">Edit</button></td>
+                    <td><button onclick="editBill('${bill.billId}')">Edit</button></td>
                 `;
                 billTableBody.appendChild(row);
             });
-            document.getElementById("createBillConsumerId").value = consumerId;
+            document.getElementById("billConsumerId").value = consumerId;
             loadPage('bill');
         })
         .catch(error => console.error('Error:', error));
@@ -101,14 +131,65 @@ function loadBills(consumerId) {
 
 function editBill(billId) {
     var row = document.querySelector(`tr[data-bill-id="${billId}"]`);
-    var cells = row.querySelectorAll("td");
+    if (!row) {
+        console.error(`Row with billId ${billId} not found`);
+        return;
+    }
+
+    var cells = row.querySelectorAll("td:not(:first-child):not(:last-child)");
     cells.forEach(cell => {
-        var input = document.createElement("input");
-        input.value = cell.innerText;
+        var field = cell.dataset.field;
+        var input;
+
+        if (field === "billMonth") {
+            input = document.createElement("select");
+            ["January", "February", "March", "April", "May", "June", "July", "August", "September", "October", "November", "December"].forEach(month => {
+                var option = document.createElement("option");
+                option.value = month;
+                option.text = month;
+                if (cell.innerText === month) {
+                    option.selected = true;
+                }
+                input.appendChild(option);
+            });
+        } else if (field === "billDate") {
+            input = document.createElement("input");
+            input.type = "date";
+            input.value = cell.innerText;
+        } else if (field === "billUnit") {
+            input = document.createElement("input");
+            input.type = "number";
+            input.value = cell.innerText;
+        } else if (field === "amount") {
+            input = document.createElement("input");
+            input.type = "number";
+            input.value = cell.innerText;
+        } else if (field === "paymentStatus") {
+            input = document.createElement("select");
+            ["Paid", "Unpaid"].forEach(status => {
+                var option = document.createElement("option");
+                option.value = status;
+                option.text = status;
+                if (cell.innerText === status) {
+                    option.selected = true;
+                }
+                input.appendChild(option);
+            });
+        } else {
+            input = document.createElement("input");
+            input.value = cell.innerText;
+        }
+
         cell.innerHTML = "";
         cell.appendChild(input);
     });
+
     var editButton = row.querySelector("button");
+    if (!editButton) {
+        console.error(`Edit button for billId ${billId} not found`);
+        return;
+    }
+
     editButton.innerText = "Save";
     editButton.onclick = function() { saveBill(billId); };
 }
@@ -118,11 +199,12 @@ function saveBill(billId) {
     var cells = row.querySelectorAll("td");
     var billData = {};
     cells.forEach(cell => {
-        var input = cell.querySelector("input");
+        var input = cell.querySelector("input, select");
         if (input) {
             billData[cell.dataset.field] = input.value;
         }
     });
+
     // Send billData to the server to save the changes
     fetch(`ConsumerBillServlet?billId=${billId}`, {
         method: "POST",
@@ -130,21 +212,31 @@ function saveBill(billId) {
             "Content-Type": "application/json"
         },
         body: JSON.stringify(billData)
-    }).then(response => response.json())
-      .then(data => {
-          // Update the row with the new data
-          cells.forEach(cell => {
-              cell.innerHTML = billData[cell.dataset.field];
-          });
-          var editButton = row.querySelector("button");
-          editButton.innerText = "Edit";
-          editButton.onclick = function() { editBill(billId); };
-      }).catch(error => console.error('Error:', error));
+    }).then(response => {
+        var successMessageElement = document.getElementById("billSuccessMessage");
+        var errorMessageElement = document.getElementById("billErrorMessage");
+        if (response.ok) {
+            successMessageElement.style.display = "block";
+            errorMessageElement.style.display = "none";
+            var consumerId = document.getElementById("billConsumerId").value;
+            loadBills(consumerId);
+        } else {
+            successMessageElement.style.display = "none";
+            errorMessageElement.style.display = "block";
+            console.error('Error saving bill:', response.statusText);
+        }
+    }).catch(error => {
+        var successMessageElement = document.getElementById("billSuccessMessage");
+        var errorMessageElement = document.getElementById("billErrorMessage");
+        successMessageElement.style.display = "none";
+        errorMessageElement.style.display = "block";
+        console.error('Error:', error);
+    });
 }
 
 function createBill() {
-    var consumerId = document.getElementById("createBillConsumerId").value;
-    document.getElementById("createBillConsumerId").value = consumerId;
+    var consumerId = document.getElementById("billConsumerId").value;
+    document.getElementById("billConsumerId").value = consumerId;
     loadPage('createBill');
 }
 

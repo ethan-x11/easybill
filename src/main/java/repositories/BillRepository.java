@@ -65,7 +65,7 @@ public class BillRepository {
     }
 
     public void updateBillPayment(long consumerId, String transactionId, String transactionDateTime, String paymentStatus) throws SQLException {
-        String sql = "UPDATE bill SET transaction_id = ?, transaction_date_time = ?, payment_status = ? WHERE consumerId = ? AND payment_status = 'unpaid'";
+        String sql = "UPDATE bill SET transaction_id = ?, transaction_date_time = ?, payment_status = ? WHERE consumerId = ? AND payment_status = 'Unpaid'";
         try (Connection connection = ConnectionManager.getConnection();
             PreparedStatement statement = connection.prepareStatement(sql)) {
             statement.setString(1, transactionId);
@@ -76,7 +76,7 @@ public class BillRepository {
         }
     }
 
-    public void createBill(Bill bill) throws SQLException {
+    public int createBill(Bill bill) throws SQLException {
         String sql = "INSERT INTO bill (billId, consumerId, unit, month, amount, date, due_date, payment_status, transaction_id, transaction_date_time) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?)";
         try (Connection conn = ConnectionManager.getConnection();
              PreparedStatement pstmt = conn.prepareStatement(sql)) {
@@ -90,7 +90,7 @@ public class BillRepository {
             pstmt.setString(8, bill.getPaymentStatus());
             pstmt.setString(9, bill.getTransactionId());
             pstmt.setTimestamp(10, bill.getTransactionDateTime() != null ? java.sql.Timestamp.valueOf(bill.getTransactionDateTime()) : null);
-            pstmt.executeUpdate();
+            return pstmt.executeUpdate();
         }
     }
 
@@ -149,5 +149,21 @@ public class BillRepository {
             }
         }
         return bills;
+    }
+
+    public int updateBill(Bill bill) throws SQLException {
+        System.out.println("BillRepository.updateBill: " + bill.getBillId());
+        String sql = "UPDATE bill SET unit = ?, month = ?, amount = ?, date = ?, due_date = ?, payment_status = ? WHERE billId = ?";
+        try (Connection connection = ConnectionManager.getConnection();
+             PreparedStatement statement = connection.prepareStatement(sql)) {
+            statement.setInt(1, bill.getUnit());
+            statement.setString(2, bill.getMonth());
+            statement.setDouble(3, bill.getAmount());
+            statement.setDate(4, java.sql.Date.valueOf(bill.getDate()));
+            statement.setDate(5, java.sql.Date.valueOf(bill.getDueDate()));
+            statement.setString(6, bill.getPaymentStatus());
+            statement.setString(7, bill.getBillId());
+            return statement.executeUpdate();
+        }
     }
 }

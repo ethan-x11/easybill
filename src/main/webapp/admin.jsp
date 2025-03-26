@@ -36,100 +36,108 @@
         </div>
     </nav>
     
-    <div class="sidebar" id="sidebar">
-        <button class="btn btn-light" onclick="toggleSidebar()">&#8592;</button>
-        <h3>List of Operations</h3>
-        <ul>
-            <li onclick="loadPage('home')">Home</li>
-            <li onclick="loadPage('consumers')">Consumers</li>
-            <li onclick="loadPage('register')">Registration</li>
-            <li onclick="loadPage('complaints')">View Complaints</li>
-            <li onclick="loadPage('createBill')">Create Bill</li>
-        </ul>
-    </div>
-    
-    <div class="content" id="content">
-        <div id="home" class="operation active">
-            <h2>Welcome to Admin Page</h2>
-            <p>Select an operation from the sidebar.</p>
+    <div class="d-flex">
+        <div class="sidebar bg-light p-3" id="sidebar">
+            <button class="btn btn-light mb-3" onclick="toggleSidebar()">&#8592;</button>
+            <h3>List of Operations</h3>
+            <ul class="list-unstyled">
+                <li class="mb-2" onclick="loadPage('home')">Home</li>
+                <li class="mb-2" onclick="loadPage('consumers')">Consumers</li>
+                <li class="mb-2" onclick="loadPage('register')">Registration</li>
+                <li class="mb-2" onclick="loadPage('complaints')">View Complaints</li>
+                <li class="mb-2" onclick="loadPage('createBill')">Create Bill</li>
+            </ul>
         </div>
         
-        <!-- 1. Search Customer Section -->
-        <div id="consumers" class="operation">
-            <h2>Customer Search</h2>
-            <div id="searchContainer">
-                <input type="text" id="searchBar" placeholder="Search by name or ID">
-                <select id="filterOptions">
-                    <option value="">View All</option>
-                    <option value="Paid">Paid</option>
-                    <option value="Unpaid">Unpaid</option>
-                </select>
-                <button id="searchButton" onclick="searchConsumers()">Search</button>
+        <div class="content flex-grow-1 p-3" id="content">
+            <div id="home" class="operation active">
+                <h2>Welcome to Admin Page</h2>
+                <p>Select an operation from the sidebar.</p>
             </div>
-            <div id="customerList">
-                <table>
-                    <thead>
-                        <tr>
-                            <th>Consumer ID</th>
-                            <th>Name</th>
-                            <th>Email</th>
-                            <th>Country Code</th>
-                            <th>Mobile Number</th>
-                            <th>User ID</th>
-                            <th>Latest Bill Amount</th>
-                            <th>Bill Month</th>
-                            <th>Bill Date</th>
-                            <th>Action</th>
-                        </tr>
-                    </thead>
-                    <tbody id="consumerTableBody">
-                        <!-- Consumer rows will be populated here -->
-                    </tbody>
-                </table>
-            </div>
-        </div>
-        
-        <!-- 2. Bill Section -->
-        <div id="bill" class="operation">
-            <div id="billListContainer">
-                <div id="billSearchContainer">
-                    <input type="text" id="billSearchBar" placeholder="Search by bill ID or month">
-                    <button id="billSearchButton" onclick="searchBills()">Search</button>
-                    <button id="createBillButton" onclick="createBill()">Create Bill</button>
+            
+            <!-- 1. Search Customer Section -->
+            <div id="consumers" class="operation">
+                <h2>Customer Search</h2>
+                <div id="searchContainer" class="d-flex mb-3">
+                    <input type="text" id="searchBar" class="form-control mr-2" placeholder="Search by name or ID">
+                    <select id="filterOptions" class="form-control mr-2">
+                        <option value="">View All</option>
+                        <option value="Paid">Paid</option>
+                        <option value="Unpaid">Unpaid</option>
+                    </select>
+                    <button id="searchButton" class="btn btn-primary" onclick="searchConsumers()">Search</button>
                 </div>
-                <table>
-                    <thead>
-                        <tr>
-                            <th>Bill ID</th>
-                            <th>Bill Month</th>
-                            <th>Bill Date</th>
-                            <th>Amount</th>
-                            <th>Payment Status</th>
-                            <th>Action</th>
-                        </tr>
-                    </thead>
-                    <tbody id="billTableBody">
-                        <!-- Bill rows will be populated here -->
-                    </tbody>
-                </table>
+                <div id="customerList">
+                    <table class="table table-bordered">
+                        <thead class="thead-light">
+                            <tr>
+                                <th>Consumer ID</th>
+                                <th>Name</th>
+                                <th>Email</th>
+                                <th>Country Code</th>
+                                <th>Mobile Number</th>
+                                <th>User ID</th>
+                                <th>Latest Bill Amount</th>
+                                <th>Bill Month</th>
+                                <th>Bill Date</th>
+                                <th>Action</th>
+                            </tr>
+                        </thead>
+                        <tbody id="consumerTableBody">
+                            <!-- Consumer rows will be populated here -->
+                        </tbody>
+                    </table>
+                </div>
             </div>
-        </div>
-        
-        <!-- 3. Register Customer Section -->
-        <div id="register" class="operation">
-            <%@ include file="register.jsp" %>
-        </div>
+            
+            <!-- 2. Bill Section -->
+            <div id="bill" class="operation">
+                <!-- Consumer Card -->
+                <div id="consumerCard" class="card mb-3" style="display: none;"></div>
 
-        <!-- 4. View Complaints Section -->
-        <div id="complaints" class="operation">
-            <%@ include file="complaint.jsp" %>
-        </div>
+                <div id="billSuccessMessage" class="alert alert-success" style="display: none;">Bill Saved Successfully</div>
+                <div id="billErrorMessage" class="alert alert-danger" style="display: none;">Error saving bill</div>
+                <div id="billListContainer">
+                    <div id="billSearchContainer" class="d-flex mb-3">
+                        <input type="text" id="billSearchBar" class="form-control mr-2" placeholder="Search by bill ID or month">
+                        <button id="billSearchButton" class="btn btn-primary mr-2" onclick="searchBills()">Search</button>
+                        <button id="createBillButton" class="btn btn-success" onclick="createBill()">Create Bill</button>
+                    </div>
+                    <table class="table table-bordered">
+                        <thead class="thead-light">
+                            <tr>
+                                <th>Bill ID</th>
+                                <th>Bill Month</th>
+                                <th>Bill Date</th>
+                                <th>Bill Unit</th>
+                                <th>Amount</th>
+                                <th>Payment Status</th>
+                                <th>Action</th>
+                            </tr>
+                        </thead>
+                        <tbody id="billTableBody">
+                            <!-- Bill rows will be populated here -->
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+            
+            <!-- 3. Register Customer Section -->
+            <div id="register" class="operation">
+                <%@ include file="register.jsp" %>
+            </div>
 
-        <!-- 5. Create Bill Section -->
-        <div id="createBill" class="operation">
-            <%@ include file="createBill.jsp" %>
-        </div>
+            <!-- 4. View Complaints Section -->
+            <div id="complaints" class="operation">
+                <%@ include file="complaint.jsp" %>
+            </div>
 
+            <!-- 5. Create Bill Section -->
+            <div id="createBill" class="operation">
+                <%@ include file="createBill.jsp" %>
+            </div>
+
+        </div>
     </div>
 
     <script>

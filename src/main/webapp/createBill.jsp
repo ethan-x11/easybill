@@ -6,9 +6,6 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link rel="stylesheet" type="text/css" href="css/admin.css">
     <title>Create Bill</title>
-    <style>
-        
-    </style>
 </head>
 <body>
     <h2>Create Bill</h2>
@@ -16,9 +13,9 @@
     <!-- Bill Form (Initially Visible) -->
     <div class="cb-container" id="billFormContainer">
         <h3>Generate New Bill</h3>
+        <div id="billMessage" class="message"></div>
         <form id="billForm" action="CreateBillServlet" method="post">
-            <input type="text" id="billCustomerId" name="billCustomerId" class="cb-input-field" required placeholder="Customer ID"><br>
-            <input type="hidden" id="createBillConsumerId" name="consumerId">
+            <input type="text" id="billConsumerId" name="billConsumerId" class="cb-input-field" required placeholder="Customer ID"><br>
             <input type="number" id="billUnit" name="billUnit" class="cb-input-field" required placeholder="Unit"><br>
             <input type="number" id="billAmount" name="billAmount" class="cb-input-field" required placeholder="Bill Amount"><br>
             <input type="date" id="billDate" name="billDate" class="cb-input-field" required><br>
@@ -28,11 +25,9 @@
             </select><br>
             <button type="submit" class="cb-submit-button">Submit Bill</button>
         </form>
-        <p id="billMessage"></p>
-        <button onclick="showSearch()" class="cb-search-button">Search for Existing Customer</button>
     </div>
 
-    <!-- Search Section (Initially Hidden) -->
+    <%-- <!-- Search Section (Initially Hidden) -->
     <div class="cb-search-container" id="searchContainer">
         <input type="text" id="billSearchBar" class="cb-input-field" placeholder="Enter customer name or ID">
         <button id="searchBillButton" class="cb-search-button">Search</button>
@@ -53,9 +48,42 @@
             </tr>
         </thead>
         <tbody id="billTableBody"></tbody>
-    </table>
+    </table> --%>
 
     <script>
+        document.getElementById("billForm").addEventListener("submit", function(event) {
+            event.preventDefault();
+            let form = event.target;
+            let formData = new FormData(form);
+            let messageDiv = document.getElementById("billMessage");
+
+            let params = new URLSearchParams(formData).toString();
+
+            fetch(form.action + "?" + params, {
+                method: form.method,
+            })
+            .then(response => {
+                if (response.ok) {
+                    return response.text().then(text => {
+                        messageDiv.className = "message success";
+                        messageDiv.textContent = text;
+                        messageDiv.style.display = "block";
+                    });
+                } else {
+                    return response.text().then(text => {
+                        messageDiv.className = "message error";
+                        messageDiv.textContent = text;
+                        messageDiv.style.display = "block";
+                    });
+                }
+            })
+            .catch(error => {
+                messageDiv.className = "message error";
+                messageDiv.textContent = "An error occurred: " + error.message;
+                messageDiv.style.display = "block";
+            });
+        });
+
         function showSearch() {
             document.getElementById("billFormContainer").style.display = "none";
             document.getElementById("searchContainer").style.display = "block";

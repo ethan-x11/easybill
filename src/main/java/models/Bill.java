@@ -2,6 +2,7 @@ package models;
 
 import java.time.LocalDate;
 import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
 
 public class Bill {
     private String billId;
@@ -14,6 +15,8 @@ public class Bill {
     private String paymentStatus;
     private String transactionId;
     private LocalDateTime transactionDateTime;
+
+    public Bill() {}
 
     public Bill(String billId, long consumerId, int unit, String month, double amount, LocalDate date, LocalDate dueDate, String paymentStatus, String transactionId, LocalDateTime transactionDateTime) {
         this.billId = billId;
@@ -58,8 +61,18 @@ public class Bill {
     public LocalDate getDate() { return date; }
     public void setDate(LocalDate date) { this.date = date; }
 
+    public void setDate(String date) {
+        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd");
+        this.date = LocalDate.parse(date, formatter);
+    }
+
     public LocalDate getDueDate() { return dueDate; }
     public void setDueDate(LocalDate dueDate) { this.dueDate = dueDate; }
+
+    public void setDueDate(String dueDate) {
+        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd");
+        this.dueDate = LocalDate.parse(dueDate, formatter);
+    }
 
     public String getPaymentStatus() { return paymentStatus; }
     public void setPaymentStatus(String paymentStatus) { this.paymentStatus = paymentStatus; }

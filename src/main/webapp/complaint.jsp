@@ -1,66 +1,80 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"%>
 <!DOCTYPE html>
-<html lang="en">
+<html>
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>View Complaints</title>
-    <link rel="stylesheet" type="text/css" href="css/admin.css">
+    <link rel="stylesheet" type="text/css" href="css/styles.css">
 </head>
 <body>
-
-    <div class="com-container">
-        <h2>View Complaints</h2>
-        
-        <!-- Search Box -->
-        <div id="complaintsSearch" class="com-search-box">
-            <input type="text" id="complaintsSearchBar" class="com-search-bar" placeholder="Enter customer name or ID">
-            <button id="complaintsSearchButton" class="com-search-button">Search</button>
-        </div>
-
-        <!-- Complaint Table -->
-        <div id="complaintsList" class="com-complaints-list">
-            <table class="com-complaints-table">
-                <thead>
-                    <tr>
-                        <th>Customer Name</th>
-                        <th>Complaint ID</th>
-                        <th>Description</th>
-                        <th>Solution</th>
-                        <th>Status</th>
-                    </tr>
-                </thead>
-                <tbody id="complaintsTableBody">
-                    <!-- Fetched complaints will be displayed here -->
-                </tbody>
+    <%@ include file="fragments/navbar.jsp" %>
+    <div class="complaint-view-container">
+        <h1>Complaints</h1>
+        <form action="ViewComplaintsServlet" method="get">
+            <input type="text" name="query" placeholder="Search by Consumer Name or ID">
+            <select name="statusFilter">
+                <option value="">All</option>
+                <option value="Pending">Pending</option>
+                <option value="Resolved">Resolved</option>
+                <option value="Closed">Closed</option>
+            </select>
+            <button type="submit">Search</button>
+        </form>
+        <div id="complaintDetails">
+            <table>
+                <tr>
+                    <th>Complaint ID</th>
+                    <th>Complaint Date</th>
+                    <th>Complaint Type</th>
+                    <th>Complaint Category</th>
+                    <th>Description</th>
+                    <th>Status</th>
+                    <th>Action</th>
+                </tr>
+                <%
+                    List<Complaint> complaints = (List<Complaint>) request.getAttribute("complaints");
+                    if (complaints != null) {
+                        for (Complaint complaint : complaints) {
+                %>
+                <tr>
+                    <td><%= complaint.getComplaintId() %></td>
+                    <td><%= complaint.getComplaintDate() %></td>
+                    <td><%= complaint.getComplaintType() %></td>
+                    <td><%= complaint.getCategory() %></td>
+                    <td><%= complaint.getProblemDescription() %></td>
+                    <td>
+                        <select name="status">
+                            <option value="Pending" <%= "Pending".equals(complaint.getStatus()) ? "selected" : "" %>>Pending</option>
+                            <option value="Resolved" <%= "Resolved".equals(complaint.getStatus()) ? "selected" : "" %>>Resolved</option>
+                            <option value="Closed" <%= "Closed".equals(complaint.getStatus()) ? "selected" : "" %>>Closed</option>
+                        </select>
+                    </td>
+                    <td>
+                        <button type="button" onclick="updateStatus(this, <%= complaint.getComplaintId() %>)">Update</button>
+                    </td>
+                </tr>
+                <%
+                        }
+                    }
+                %>
             </table>
         </div>
     </div>
-
+    <%@ include file="fragments/footer.jsp" %>
     <script>
-        document.getElementById("complaintsSearchButton").addEventListener("click", function () {
-            let searchQuery = document.getElementById("complaintsSearchBar").value;
-
-            fetch("ViewComplaintsServlet?query=" + encodeURIComponent(searchQuery))
-                .then(response => response.json())
-                .then(data => {
-                    let tableBody = document.getElementById("complaintsTableBody");
-                    tableBody.innerHTML = ""; // Clear previous data
-
-                    data.forEach(complaint => {
-                        let row = `<tr>
-                            <td>${complaint.name}</td>
-                            <td>${complaint.complaintId}</td>
-                            <td>${complaint.description}</td>
-                            <td>${complaint.solution || "Pending"}</td>
-                            <td>${complaint.status}</td>
-                        </tr>`;
-                        tableBody.innerHTML += row;
-                    });
-                })
-                .catch(error => console.error("Error fetching complaints:", error));
-        });
+        function updateStatus(button, complaintId) {
+            var row = button.closest('tr');
+            var status = row.querySelector('select[name="status"]').value;
+            var xhr = new XMLHttpRequest();
+            xhr.open("POST", "UpdateComplaintStatusServlet", true);
+            xhr.setRequestHeader("Content-Type", "application/x-www-form-urlencoded");
+            xhr.onreadystatechange = function () {
+                if (xhr.readyState === 4 && xhr.status === 200) {
+                    button.textContent = "Save";
+                }
+            };
+            xhr.send("complaintId=" + complaintId + "&status=" + status);
+        }
     </script>
-
 </body>
 </html>
