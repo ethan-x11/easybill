@@ -106,6 +106,7 @@ function loadBills(consumerId) {
                     </div>
                 `;
                 consumerCard.style.display = "block";
+                document.getElementById("billConsumerId").value = consumerId;
                 loadPage('bill');
                 return;
             }
