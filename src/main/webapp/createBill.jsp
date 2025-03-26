@@ -59,6 +59,7 @@
                 messageDiv.textContent = "An error occurred: " + error.message;
                 messageDiv.style.display = "block";
             });
+            form.reset();
         });
 
         function showSearch() {

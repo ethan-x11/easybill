@@ -106,6 +106,7 @@ function loadBills(consumerId) {
                     </div>
                 `;
                 consumerCard.style.display = "block";
+                document.getElementById("billForm").reset();
                 document.getElementById("billConsumerId").value = consumerId;
                 loadPage('bill');
                 return;
@@ -138,6 +139,7 @@ function loadBills(consumerId) {
                 `;
                 billTableBody.appendChild(row);
             });
+            document.getElementById("billForm").reset();
             document.getElementById("billConsumerId").value = consumerId;
             loadPage('bill');
         })
